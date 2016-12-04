@@ -5,21 +5,39 @@ def get_page(url):
     except:
         return ''
 
+def union(p,q):
+    for e in q:
+        if e not in p:
+            p.append(e)
+
 def get_next_target(page):
     start_link = page.find('<a href=') 
+    if start_link == -1:
+        return None, 0
     start_quote = page.find('"', start_link)
     end_quote = page.find('"', start_quote + 1)
     url = page[start_quote + 1:end_quote]
     return url, end_quote
-
-def print_all_links(page):
+    
+def get_all_links(page):
+    urlList = []
     while True:
         url, endpos = get_next_target(page)
         if url:
-            print url
+            urlList.append(url)
             page = page[endpos:]
         else: 
-            break
+            return urlList
 
+def crawl_web(seed):
+    tocrawl = [seed]
+    crawled = []
+    while tocrawl:
+        page = tocrawl.pop()
+        if page not in crawled:
+            crawled.append(page)
+            union(tocrawl, get_all_links(get_page(page)))
+    return crawled
 
-print_all_links(get_page('http://www.douban.com'))
+url = crawl_web('http://www.douban.com')
+print url
