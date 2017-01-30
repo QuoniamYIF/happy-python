@@ -20,13 +20,12 @@ def lookup(index,keyword):
     else:
         return None
 
+# for entry in index:
+#     if entry[0] == keyword:
+#         entry[1].append(url)
+#         return
+# index.append([keyword, [url]])
 def add_to_index(index, keyword, url):
-    # 使用Python字典替换原有方法
-    # for entry in index:
-    #     if entry[0] == keyword:
-    #         entry[1].append(url)
-    #         return
-    # index.append([keyword, [url]])
     if keyword in index:
         index[keyword].append(url)
         # return
@@ -76,7 +75,6 @@ def crawl_web(seed):
 def computer_ranks(graph):
     d = 0.8 #damping factor
     numloops = 10
-
     ranks = {}
     npages = len(graph)
     for page in graph:
